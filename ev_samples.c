@@ -72,6 +72,7 @@ int  main()
 
 	size_t globalSize[1]={nElement},localSize[1]={256};
 	clEnqueueNDRangeKernel(cmdQueue,kernel,1,NULL,globalSize,localSize,3,eventList,NULL); //核函数的调用需要等待事件列表，事件列表长度为3
+	//clSetEventCallback(eventList[0],CL_COMPLETE,callbackFunction,&i); //在自定义事件 eventList[0] 完成后允许回调函数开始执行
 	clSetUserEventStatus(eventList[0],CL_COMPLETE);//自定义完成事件，eventList[0],这样一来写缓冲区和内核才能开始运行
 	clSetEventCallback(eventList[0],CL_COMPLETE,callbackFunction,&i); //在自定义事件 eventList[0] 完成后允许回调函数开始执行
 	clEnqueueReadBuffer(cmdQueue,bufferC,CL_TRUE,0,datasize,C,0,NULL,NULL);
