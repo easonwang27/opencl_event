@@ -9,7 +9,15 @@
 #include <CL/cl.h>
 
 const int nElement = 2048;
-const char *programSource="__kernel void vectorAdd(__global int *A,__global int *B,__global int *c){int idx = get_gloabl_id(0);C[idx] =A[idx]+B[idx];}";
+
+const char *programSource = "                                              \
+	__kernel void vectorAdd(__global int *A, __global int *B, __global int *C) \
+	 {                                                                          \
+	      int idx = get_global_id(0);                                            \
+	      C[idx] = A[idx] + B[idx];                                              \
+	      return;                                                                \
+	  }                                                                          \
+	 ";
 
 int  main()
 {
@@ -58,7 +66,7 @@ int  main()
 	clEnqueueReadBuffer(cmdQueue,bufferC,CL_TRUE,0,datasize,C,0,NULL,NULL);
 	for(i =0;i<nElement;i++)
 	{
-		if(C[i]!=i+1){
+		if(C[i]!=i+i){
 			break;
 		}
 	}
